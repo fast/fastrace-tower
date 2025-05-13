@@ -1,0 +1,19 @@
+[package]
+name = "fastrace-tower"
+version = "0.1.0"
+
+categories = ["development-tools::debugging"]
+description = "A tower layer for propagating trace context for fastrace"
+keywords = ["tracing", "fastrace", "tower", "traceparent", "propagation"]
+readme = "README.md"
+
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/fast/fastrace-tower"
+rust-version = "1.75"
+
+[dependencies]
+fastrace = "0.7"
+http = "1.2"
+tower-layer = "0.3"
+tower-service = "0.3"
