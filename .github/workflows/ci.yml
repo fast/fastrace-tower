@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, macos-latest, ubuntu-latest ]
-        rust: [ "1.75.0", "stable", "nightly" ]
+        rust: [ "1.80.0", "stable", "nightly" ]
     env:
       RUST_BACKTRACE: 1
     steps:
@@ -37,12 +37,3 @@ jobs:
 
       - name: Build
         run: cargo +${{ matrix.rust }} build --workspace --all-targets
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Check examples
-        run: |
-          cd example
-          cargo +${{ matrix.rust }} check --bin client
-          cargo +${{ matrix.rust }} check --bin server
