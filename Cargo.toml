@@ -1,6 +1,6 @@
 [package]
 name = "fastrace-tower"
-version = "0.1.0"
+version = "0.1.1"
 
 categories = ["development-tools::debugging"]
 description = "A tower layer for propagating trace context for fastrace"
