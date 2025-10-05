@@ -42,8 +42,7 @@ pub struct FastraceServerService<S> {
 }
 
 impl<S, Body> Service<Request<Body>> for FastraceServerService<S>
-where
-    S: Service<Request<Body>>,
+where S: Service<Request<Body>>
 {
     type Response = S::Response;
     type Error = S::Error;
@@ -95,8 +94,7 @@ pub struct FastraceClientService<S> {
 }
 
 impl<S, Body> Service<Request<Body>> for FastraceClientService<S>
-where
-    S: Service<Request<Body>>,
+where S: Service<Request<Body>>
 {
     type Response = S::Response;
     type Error = S::Error;
@@ -113,7 +111,7 @@ where
                 HeaderValue::from_str(&current.encode_w3c_traceparent()).unwrap(),
             );
         }
-        
+
         self.service.call(req)
     }
 }
