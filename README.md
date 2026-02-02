@@ -20,11 +20,33 @@ Context propagation is a fundamental concept in distributed tracing that enables
 - 🌉 **Seamless Integration**: Works seamlessly with the `fastrace` library for complete distributed tracing.
 - 📊 **Full Compatibility**: Works with fastrace's collection and reporting capabilities.
 
+### Custom span context extractor
+
+By default, the server layer reads the `traceparent` header and starts a new trace when it is
+missing or invalid. To customize extraction (for example, keep noop when it is missing),
+configure an extractor. Return `None` to keep noop:
+
+```rust
+use fastrace_tower::TRACEPARENT_HEADER;
+
+let layer = fastrace_tower::FastraceServerLayer::default()
+    .with_span_context_extractor(|headers| {
+        headers
+            .get(TRACEPARENT_HEADER)
+            .and_then(|traceparent| {
+                fastrace::prelude::SpanContext::decode_w3c_traceparent(
+                    traceparent.to_str().ok()?,
+                )
+            })
+    });
+```
+
 ## How It Works
 
 1. When a client makes a request, `FastraceClientLayer` detects if there's an active trace and adds a `traceparent` HTTP header with the trace context.
-2. When a server receives the request, `FastraceServerLayer` extracts the trace context from the `traceparent` header and creates a new span as a child of the received context.
-3. If no trace context is provided, the server creates a new root span.
+2. When a server receives the request, `FastraceServerLayer` runs the span context extractor. By default, it decodes the `traceparent` header, otherwise starts a new trace.
+3. If the extractor returns `None`, a noop span is used.
+4. When a context is available, the server creates a new root span for the request using the method as the name.
 
 This process ensures that all operations across services are properly connected in the resulting trace, providing visibility into the entire request lifecycle.
 
