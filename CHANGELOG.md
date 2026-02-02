@@ -13,8 +13,3 @@ All significant changes to this project will be documented in this file.
 ### New Features
 
 * Added a configurable span context extractor; default reads `traceparent` and starts a new trace when missing or invalid.
-* Added ability for extractors to return `None` to keep noop spans.
-
-### Improvements
-
-* Updated documentation for the new constructor and extractor behavior.
